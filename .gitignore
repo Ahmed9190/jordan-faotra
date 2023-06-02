@@ -1,0 +1,6 @@
+/.env
+/dist
+/example.xml
+/General tax invoice.xml
+/node_modules
+/result.xml
