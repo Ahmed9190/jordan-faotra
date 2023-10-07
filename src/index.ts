@@ -23,7 +23,6 @@ app.get("/", (req: Request, res: Response) => {
 app.post(
   "/invoice",
   async (req: Request<never, never, CreateInvoiceDto>, res) => {
-    console.log(req.body);
     const { customer, ...invoiceData } = req.body;
     const invoice: Invoice = new Invoice(
       {
@@ -47,7 +46,6 @@ app.post(
       }
     );
 
-    console.log(invoice.toXmlString());
     const headers = invoice.getFaotraRequestHeaders();
     const jsonBody = invoice.toJson();
 
