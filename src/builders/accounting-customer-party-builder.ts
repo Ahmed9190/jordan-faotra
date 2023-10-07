@@ -44,7 +44,7 @@ export default class AccountingCustomerPartyBuilder extends InvoiceXmlBuilder {
 
   private withPartyIdentification(
     customerPartyNumberType: CustomerPartyIdType,
-    customerPartyNumber: number
+    customerPartyNumber: string
   ): this {
     this.xmlBuilder
       .ele("cac:PartyIdentification")
@@ -83,7 +83,7 @@ export default class AccountingCustomerPartyBuilder extends InvoiceXmlBuilder {
     return this;
   }
 
-  private withPartyTaxScheme(customerPartyNumber: number): this {
+  private withPartyTaxScheme(customerPartyNumber: string): this {
     this.xmlBuilder
       .ele("cac:PartyTaxScheme")
       .ele("cbc:CompanyID")

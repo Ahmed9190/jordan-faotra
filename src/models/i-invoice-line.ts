@@ -1,10 +1,14 @@
 import { CountryCode } from "../types/country-code.type";
 
 export default interface IInvoiceLine {
+  /**رقم تسلسلي */
   itemId: string;
+  /**اسم السلعة أو الخدمة */
   nameOrDescription: string;
   quantity: number;
+  /**سعر الوحدة قبل الضريبة */
   unitPrice: number;
+  /**قيمة الخصم */
   discount: number;
   currencyId: CountryCode;
 

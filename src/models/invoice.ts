@@ -3,6 +3,8 @@ import IFaotraRequestHeaders from "./i-faotra-request-headers";
 import IInvoice from "./i-invoice";
 
 export default class Invoice {
+  private xmlString: string | undefined;
+
   constructor(
     private readonly invoiceData: IInvoice,
     private readonly faotraRequestHeaders: Omit<
@@ -13,15 +15,15 @@ export default class Invoice {
   ) {}
 
   toJson(): { invoice: string } {
-    const xmlString = this.toXmlString();
+    if (!this.xmlString) this.xmlString = this.toXmlString();
 
-    const invoiceBase64 = Buffer.from(xmlString).toString("base64");
+    const invoiceBase64 = Buffer.from(this.xmlString).toString("base64");
 
     return { invoice: invoiceBase64 };
   }
 
   toXmlString(): string {
-    return this.invoiceBuilder
+    this.xmlString = this.invoiceBuilder
       .create({
         id: this.invoiceData.id,
         uuid: this.invoiceData.uuid,
@@ -43,6 +45,8 @@ export default class Invoice {
         payableAmount: this.invoiceData.payableAmount,
       })
       .build();
+
+    return this.xmlString!;
   }
 
   getFaotraRequestHeaders(): IFaotraRequestHeaders {
