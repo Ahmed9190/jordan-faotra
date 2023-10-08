@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import { CreateInvoiceDto } from "./dtos/create-invoice.dto";
 import { FaotraApiResultDto } from "./dtos/faotra-api-result.dto";
 import bodyParser from "body-parser";
+import { formatErrors } from "./utils/error.utils";
 
 dotenv.config();
 
@@ -15,10 +16,6 @@ const app: Express = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
-});
 
 app.post(
   "/invoice",
@@ -62,17 +59,8 @@ app.post(
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;
-        if (data["EINV_RESULTS"]["ERRORS"].length > 0) {
-          data["EINV_RESULTS"]["ERRORS"] = data["EINV_RESULTS"]["ERRORS"].map(
-            ({ EINV_MESSAGE }: any) => {
-              // TODO:
-              const x = EINV_MESSAGE.split(" : ")[1].substring(1);
-              const y = x.substring(0, x.length - 1);
-              return JSON.parse(y);
-            }
-          );
-        }
-        res.status(400).send(error.response?.data as any);
+        const errorsResponse = formatErrors(data);
+        res.status(400).send(errorsResponse as any);
       }
     }
   }
