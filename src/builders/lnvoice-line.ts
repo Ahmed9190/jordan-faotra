@@ -68,7 +68,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     assert(unitPrice > 0, "unitPrice must be positive");
     assert(discount >= 0, "discount must be positive or zero");
     assert(quantity > 0, "quantity must be positive");
-    assert(NumberUtils.isInt(quantity), "quantity must be integer");
+    // assert(NumberUtils.isInt(quantity), "quantity must be integer");
 
     const total = unitPrice * quantity - discount;
 
