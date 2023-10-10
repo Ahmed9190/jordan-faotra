@@ -118,6 +118,7 @@ app.post(
       )
       .then(({ data }) => {
         res.send({
+          json: req.body,
           request: invoice.toXmlString(),
           response: data,
         });
