@@ -122,7 +122,13 @@ app.post(
         if (isAxiosError(error)) {
           const data = error.response?.data;
           const errorsResponse = formatErrors(data);
-          res.status(400).send(errorsResponse as any);
+
+          res.send({
+            json: req.body,
+            request: invoice.toXmlString(),
+            response: data,
+            ...errorsResponse,
+          });
         }
       });
   }
