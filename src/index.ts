@@ -70,11 +70,6 @@ app.post(
   }
 );
 
-// create the same request but return the built xml xml for request and response
-// {
-//   "request": "<xml>....",
-//   "response": "<xml>...."
-// }
 app.post(
   "/invoice/xml",
   (req: Request<never, never, CreateInvoiceDto>, res: Response) => {
