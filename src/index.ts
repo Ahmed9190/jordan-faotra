@@ -27,7 +27,11 @@ app.post(
         issueDate: new Date(),
         invoiceType: InvoiceType.createNewCashInvoice,
         currencyCode: "JOD",
-        supplier: { countryCode: "JO", taxNumber: 11803860, name: "BBBBBB" },
+        supplier: {
+          countryCode: "JO",
+          taxNumber: 11803860,
+          name: "شركة الافق لصناعة الزجاج",
+        },
         customer: {
           countryCode: "JO",
           ...customer,
@@ -47,7 +51,7 @@ app.post(
     const jsonBody = invoice.toJson();
 
     try {
-      const { data: responseData } = await axios.post<FaotraApiResultDto>(
+      const { data } = await axios.post<FaotraApiResultDto>(
         "https://backend.jofotara.gov.jo/core/invoices/",
         jsonBody,
         {
@@ -55,7 +59,7 @@ app.post(
         }
       );
 
-      res.send(responseData as any);
+      res.send(data as any);
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;
@@ -63,6 +67,68 @@ app.post(
         res.status(400).send(errorsResponse as any);
       }
     }
+  }
+);
+
+// create the same request but return the built xml xml for request and response
+// {
+//   "request": "<xml>....",
+//   "response": "<xml>...."
+// }
+app.post(
+  "/invoice/xml",
+  (req: Request<never, never, CreateInvoiceDto>, res: Response) => {
+    const { customer, ...invoiceData } = req.body;
+    const invoice: Invoice = new Invoice(
+      {
+        uuid: uuidv4(),
+        issueDate: new Date(),
+        invoiceType: InvoiceType.createNewCashInvoice,
+        currencyCode: "JOD",
+        supplier: {
+          countryCode: "JO",
+          taxNumber: 11803860,
+          name: "شركة الافق لصناعة الزجاج",
+        },
+        customer: {
+          countryCode: "JO",
+          ...customer,
+        },
+        countryCode: "JO",
+        incomeSourceSequence: 12758574,
+        ...invoiceData,
+      },
+      {
+        "Client-Id": process.env.CLIENT_ID!,
+        "Secret-Key": process.env.SECRET_KEY!,
+        Cookie: process.env.COOKIE!,
+      }
+    );
+
+    const headers = invoice.getFaotraRequestHeaders();
+    const jsonBody = invoice.toJson();
+
+    axios
+      .post<FaotraApiResultDto>(
+        "https://backend.jofotara.gov.jo/core/invoices/",
+        jsonBody,
+        {
+          headers: { ...headers },
+        }
+      )
+      .then(({ data }) => {
+        res.send({
+          request: invoice.toXmlString(),
+          response: data,
+        });
+      })
+      .catch((error) => {
+        if (isAxiosError(error)) {
+          const data = error.response?.data;
+          const errorsResponse = formatErrors(data);
+          res.status(400).send(errorsResponse as any);
+        }
+      });
   }
 );
 
@@ -75,7 +141,7 @@ app.post(
 //     invoiceType: InvoiceType.createNewCashInvoice,
 //     note: "ملاحظات 22",
 //     currencyCode: "JOD",
-//     supplier: { countryCode: "JO", taxNumber: 11803860, name: "BBBBBB" },
+//     supplier: { countryCode: "JO", taxNumber: 11803860, name: "شركة الافق لصناعة الزجاج" },
 //     customer: {
 //       name: "امجد سليمان",
 //       customerPartyNumber: 33445544,
