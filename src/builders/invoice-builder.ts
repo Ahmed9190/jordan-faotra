@@ -196,7 +196,7 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
       .txt("discount")
       .up()
       .ele("cbc:Amount", { currencyID: currencyId })
-      .txt(totalDiscount.toFixed(2))
+      .txt(totalDiscount.toFixed(3))
       .up()
       .up();
     return this;
@@ -206,7 +206,7 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder
       .ele("cac:TaxTotal")
       .ele("cbc:TaxAmount", { currencyID: countryCode })
-      .txt(taxAmount.toFixed(2))
+      .txt(taxAmount.toFixed(3))
       .up()
       .up();
     return this;
@@ -228,16 +228,16 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder
       .ele("cac:LegalMonetaryTotal")
       .ele("cbc:TaxExclusiveAmount", { currencyID: countryCode })
-      .txt(taxExclusiveAmount.toFixed(2))
+      .txt(taxExclusiveAmount.toFixed(3))
       .up()
       .ele("cbc:TaxInclusiveAmount", { currencyID: countryCode })
-      .txt(taxInclusiveAmount.toFixed(2))
+      .txt(taxInclusiveAmount.toFixed(3))
       .up()
       .ele("cbc:AllowanceTotalAmount", { currencyID: countryCode })
-      .txt(allowanceTotalAmount.toFixed(2))
+      .txt(allowanceTotalAmount.toFixed(3))
       .up()
       .ele("cbc:PayableAmount", { currencyID: countryCode })
-      .txt(payableAmount.toFixed(2))
+      .txt(payableAmount.toFixed(3))
       .up()
       .up();
 
