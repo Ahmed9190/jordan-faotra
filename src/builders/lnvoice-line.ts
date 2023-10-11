@@ -49,7 +49,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
   private withInvoicedQuantity(quantity: number): this {
     this.xmlBuilder
       .ele("cbc:InvoicedQuantity", { unitCode: "PCE" })
-      .txt(quantity.toFixed(3))
+      .txt(quantity.toString())
       .up();
     return this;
   }
@@ -81,7 +81,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
 
     this.xmlBuilder
       .ele("cbc:LineExtensionAmount", { currencyID: currencyId })
-      .txt(total.toFixed(3))
+      .txt(total.toString())
       .up();
 
     return this;
@@ -101,16 +101,16 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder
       .ele("cac:TaxTotal")
       .ele("cbc:TaxAmount", { currencyID: countryCode })
-      .txt(taxAmount.toFixed(3))
+      .txt(taxAmount.toString())
       .up()
 
       .ele("cbc:RoundingAmount", { currencyID: countryCode })
-      .txt(roundingAmount.toFixed(3))
+      .txt(roundingAmount.toString())
       .up()
 
       .ele("cac:TaxSubtotal")
       .ele("cbc:TaxAmount", { currencyID: countryCode })
-      .txt(taxAmount.toFixed(3))
+      .txt(taxAmount.toString())
       .up()
 
       .ele("cac:TaxCategory")
@@ -119,7 +119,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
       .up()
 
       .ele("cbc:Percent")
-      .txt(generalTaxPercent.toFixed(3))
+      .txt(generalTaxPercent.toString())
       .up()
 
       .ele("cac:TaxScheme")
@@ -158,7 +158,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder
       .ele("cac:Price")
       .ele("cbc:PriceAmount", { currencyID: currencyId })
-      .txt(unitPrice.toFixed(3))
+      .txt(unitPrice.toString())
       .up()
       .ele("cac:AllowanceCharge")
       .ele("cbc:ChargeIndicator")
@@ -168,7 +168,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
       .txt("DISCOUNT")
       .up()
       .ele("cbc:Amount", { currencyID: currencyId })
-      .txt(discount.toFixed(3))
+      .txt(discount.toString())
       .up()
       .up()
       .up();
