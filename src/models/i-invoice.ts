@@ -15,7 +15,7 @@ export default interface IInvoice {
    */
   uuid: string;
   /** عداد الفاتورة */
-  invoiceNumber: number;
+  invoiceNumber: string;
   /** تاريخ الفاتورة */
   issueDate: Date;
   /** نوع الفاتورة */
@@ -29,19 +29,19 @@ export default interface IInvoice {
   /**المشتري */
   customer: ICustomer;
   /** تسلسل مصدر الدخل */
-  incomeSourceSequence: number;
+  incomeSourceSequence: string;
   /** سلع الفاتورة */
   invoiceLines: IInvoiceLine[];
   /** قيمة الخصم */
-  totalDiscount: number;
+  totalDiscount: string;
   /** قيمة الضريبة العامة للخدمة أو السلعة */
-  taxAmount: number;
+  taxAmount: string;
   /** إجمالي الفاتورة قبل الخصم */
-  taxExclusiveAmount: number;
+  taxExclusiveAmount: string;
   /** إجمالي الفاتورة */
-  taxInclusiveAmount: number;
+  taxInclusiveAmount: string;
   /** مجموع قيمة الخصم */
-  allowanceTotalAmount: number;
+  allowanceTotalAmount: string;
   /** إجمالي الفاتورة */
-  payableAmount: number;
+  payableAmount: string;
 }

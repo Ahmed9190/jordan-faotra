@@ -16,6 +16,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     quantity,
     unitPrice,
     discount,
+    totalAfterDiscount,
     currencyId,
     countryCode,
     taxAmount,
@@ -27,7 +28,10 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
 
     this.withID(itemId)
       .withInvoicedQuantity(quantity)
-      .withLineExtensionAmount({ currencyId, discount, quantity, unitPrice })
+      .withLineExtensionAmount({
+        currencyId,
+        totalAfterDiscount,
+      })
       .withTaxTotal({
         countryCode,
         taxAmount,
@@ -46,42 +50,24 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder.ele("cbc:ID").txt(itemId).up();
     return this;
   }
-  private withInvoicedQuantity(quantity: number): this {
+  private withInvoicedQuantity(quantity: string): this {
     this.xmlBuilder
       .ele("cbc:InvoicedQuantity", { unitCode: "PCE" })
-      .txt(quantity.toString())
+      .txt(quantity)
       .up();
     return this;
   }
 
   private withLineExtensionAmount({
     currencyId,
-    unitPrice,
-    quantity,
-    discount,
+    totalAfterDiscount,
   }: {
     currencyId: CountryCode;
-    unitPrice: number;
-    quantity: number;
-    discount: number;
+    totalAfterDiscount: string;
   }): this {
-    assert(unitPrice > 0, "unitPrice must be positive");
-    assert(discount >= 0, "discount must be positive or zero");
-    assert(quantity > 0, "quantity must be positive");
-    // assert(NumberUtils.isInt(quantity), "quantity must be integer");
-
-    const total = unitPrice * quantity - discount;
-
-    assert(
-      total > 0,
-      `Total is negative. Please note that discount must be less than ${
-        unitPrice * quantity
-      }`
-    );
-
     this.xmlBuilder
       .ele("cbc:LineExtensionAmount", { currencyID: currencyId })
-      .txt(total.toString())
+      .txt(totalAfterDiscount)
       .up();
 
     return this;
@@ -94,23 +80,23 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     generalTaxPercent,
   }: {
     countryCode: CountryCode;
-    taxAmount: number;
-    roundingAmount: number;
-    generalTaxPercent: number;
+    taxAmount: string;
+    roundingAmount: string;
+    generalTaxPercent: string;
   }): this {
     this.xmlBuilder
       .ele("cac:TaxTotal")
       .ele("cbc:TaxAmount", { currencyID: countryCode })
-      .txt(taxAmount.toString())
+      .txt(taxAmount)
       .up()
 
       .ele("cbc:RoundingAmount", { currencyID: countryCode })
-      .txt(roundingAmount.toString())
+      .txt(roundingAmount)
       .up()
 
       .ele("cac:TaxSubtotal")
       .ele("cbc:TaxAmount", { currencyID: countryCode })
-      .txt(taxAmount.toString())
+      .txt(taxAmount)
       .up()
 
       .ele("cac:TaxCategory")
@@ -119,7 +105,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
       .up()
 
       .ele("cbc:Percent")
-      .txt(generalTaxPercent.toString())
+      .txt(generalTaxPercent)
       .up()
 
       .ele("cac:TaxScheme")
@@ -149,16 +135,16 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
     discount,
   }: {
     currencyId: CountryCode;
-    unitPrice: number;
-    discount: number;
+    unitPrice: string;
+    discount: string;
   }): this {
-    assert(unitPrice > 0, "unitPrice must be positive");
-    assert(discount >= 0, "discount must be positive or zero");
+    assert(+unitPrice > 0, "unitPrice must be positive");
+    assert(+discount >= 0, "discount must be positive or zero");
 
     this.xmlBuilder
       .ele("cac:Price")
       .ele("cbc:PriceAmount", { currencyID: currencyId })
-      .txt(unitPrice.toString())
+      .txt(unitPrice)
       .up()
       .ele("cac:AllowanceCharge")
       .ele("cbc:ChargeIndicator")
@@ -168,7 +154,7 @@ export class InvoiceLineBuilder extends InvoiceXmlBuilder {
       .txt("DISCOUNT")
       .up()
       .ele("cbc:Amount", { currencyID: currencyId })
-      .txt(discount.toString())
+      .txt(discount)
       .up()
       .up()
       .up();

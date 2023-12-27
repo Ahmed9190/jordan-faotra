@@ -6,7 +6,7 @@ export default class SellerSupplierPartyBuilder extends InvoiceXmlBuilder {
     super();
   }
 
-  public create(incomeSourceSequence: number): this {
+  public create(incomeSourceSequence: string): this {
     const xmlBuilderTemp = this.xmlBuilder;
     this.xmlBuilder = this.xmlBuilder
       .ele("cac:SellerSupplierParty")
@@ -19,11 +19,11 @@ export default class SellerSupplierPartyBuilder extends InvoiceXmlBuilder {
     return this;
   }
 
-  private withPartyIdentification(incomeSourceSequence: number): this {
+  private withPartyIdentification(incomeSourceSequence: string): this {
     this.xmlBuilder
       .ele("cac:PartyIdentification")
       .ele("cbc:ID")
-      .txt(incomeSourceSequence.toString())
+      .txt(incomeSourceSequence)
       .up()
       .up();
 

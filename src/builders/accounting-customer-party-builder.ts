@@ -49,7 +49,7 @@ export default class AccountingCustomerPartyBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder
       .ele("cac:PartyIdentification")
       .ele("cbc:ID", { schemeID: customerPartyNumberType })
-      .txt(customerPartyNumber.toString())
+      .txt(customerPartyNumber)
       .up()
       .up();
 
@@ -61,14 +61,14 @@ export default class AccountingCustomerPartyBuilder extends InvoiceXmlBuilder {
     countrySubentityCode,
     postalCode,
   }: {
-    postalCode: number;
+    postalCode: string;
     countryCode: CountryCode;
     countrySubentityCode: CountrySubEntityCode;
   }): this {
     this.xmlBuilder
       .ele("cac:PostalAddress")
       .ele("cbc:PostalZone")
-      .txt(postalCode.toString())
+      .txt(postalCode)
       .up()
       .ele("cbc:CountrySubentityCode")
       .txt(`${countryCode}-${countrySubentityCode}`)
@@ -87,7 +87,7 @@ export default class AccountingCustomerPartyBuilder extends InvoiceXmlBuilder {
     this.xmlBuilder
       .ele("cac:PartyTaxScheme")
       .ele("cbc:CompanyID")
-      .txt(customerPartyNumber.toString())
+      .txt(customerPartyNumber)
       .up()
       .ele("cac:TaxScheme")
       .ele("cbc:ID")

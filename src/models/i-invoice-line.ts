@@ -5,18 +5,20 @@ export default interface IInvoiceLine {
   itemId: string;
   /**اسم السلعة أو الخدمة */
   nameOrDescription: string;
-  quantity: number;
+  quantity: string;
   /**سعر الوحدة قبل الضريبة */
-  unitPrice: number;
+  unitPrice: string;
   /**قيمة الخصم */
-  discount: number;
+  discount: string;
   currencyId: CountryCode;
+  /** (سعر الوحدة * الكمية) - خصم السلعة أو الخدمة  */
+  totalAfterDiscount: string;
 
   countryCode: CountryCode;
   /** مجموع قيمة الضريبة العامة */
-  taxAmount: number;
+  taxAmount: string;
   /** المبلغ الإجمالي للسلعة أو الخدمة شامل الضريبة */
-  roundingAmount: number;
+  roundingAmount: string;
   /** النسبة المئوية الضريبة العامة على السلعة أو الخدمة 0-100*/
-  generalTaxPercent: number;
+  generalTaxPercent: string;
 }

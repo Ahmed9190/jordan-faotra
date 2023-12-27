@@ -152,14 +152,14 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
   }
 
   /** example: private withAdditionalDocumentReference(1) */
-  private withAdditionalDocumentReference(invoiceNumber: number): this {
+  private withAdditionalDocumentReference(invoiceNumber: string): this {
     this.xmlBuilder
       .ele("cac:AdditionalDocumentReference")
       .ele("cbc:ID")
       .txt("ICV")
       .up()
       .ele("cbc:UUID")
-      .txt(invoiceNumber.toString())
+      .txt(invoiceNumber)
       .up()
       .up();
 
@@ -178,14 +178,14 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
     return this;
   }
 
-  private withSellerSupplierPartyBuilder(incomeSourceSequence: number): this {
+  private withSellerSupplierPartyBuilder(incomeSourceSequence: string): this {
     this.sellerSupplierPartyBuilder.create(incomeSourceSequence);
     return this;
   }
 
   private withAllowanceCharge(
     currencyId: CountryCode,
-    totalDiscount: number
+    totalDiscount: string
   ): this {
     this.xmlBuilder
       .ele("cac:AllowanceCharge")
@@ -196,17 +196,17 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
       .txt("discount")
       .up()
       .ele("cbc:Amount", { currencyID: currencyId })
-      .txt(totalDiscount.toString())
+      .txt(totalDiscount)
       .up()
       .up();
     return this;
   }
 
-  private withTaxTotal(countryCode: CountryCode, taxAmount: number): this {
+  private withTaxTotal(countryCode: CountryCode, taxAmount: string): this {
     this.xmlBuilder
       .ele("cac:TaxTotal")
       .ele("cbc:TaxAmount", { currencyID: countryCode })
-      .txt(taxAmount.toString())
+      .txt(taxAmount)
       .up()
       .up();
     return this;
@@ -220,24 +220,24 @@ export class InvoiceBuilder extends InvoiceXmlBuilder {
     payableAmount,
   }: {
     countryCode: CountryCode;
-    taxExclusiveAmount: number;
-    taxInclusiveAmount: number;
-    allowanceTotalAmount: number;
-    payableAmount: number;
+    taxExclusiveAmount: string;
+    taxInclusiveAmount: string;
+    allowanceTotalAmount: string;
+    payableAmount: string;
   }): this {
     this.xmlBuilder
       .ele("cac:LegalMonetaryTotal")
       .ele("cbc:TaxExclusiveAmount", { currencyID: countryCode })
-      .txt(taxExclusiveAmount.toString())
+      .txt(taxExclusiveAmount)
       .up()
       .ele("cbc:TaxInclusiveAmount", { currencyID: countryCode })
-      .txt(taxInclusiveAmount.toString())
+      .txt(taxInclusiveAmount)
       .up()
       .ele("cbc:AllowanceTotalAmount", { currencyID: countryCode })
-      .txt(allowanceTotalAmount.toString())
+      .txt(allowanceTotalAmount)
       .up()
       .ele("cbc:PayableAmount", { currencyID: countryCode })
-      .txt(payableAmount.toString())
+      .txt(payableAmount)
       .up()
       .up();
 

@@ -8,7 +8,7 @@ export default interface ICustomer {
   /** الرقم الضريبي للمشتري */
   customerPartyNumber: string;
   /** الرمز البريدي */
-  postalCode: number;
+  postalCode: string;
   countryCode: CountryCode;
 
   /** المدينة */

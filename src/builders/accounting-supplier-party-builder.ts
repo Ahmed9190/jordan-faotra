@@ -37,11 +37,11 @@ export default class AccountingSupplierPartyBuilder extends InvoiceXmlBuilder {
     return this;
   }
 
-  private withPartyTaxScheme(taxNumber: number): this {
+  private withPartyTaxScheme(taxNumber: string): this {
     this.xmlBuilder
       .ele("cac:PartyTaxScheme")
       .ele("cbc:CompanyID")
-      .txt(taxNumber.toString())
+      .txt(taxNumber)
       .up()
       .ele("cac:TaxScheme")
       .ele("cbc:ID")
